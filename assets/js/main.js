@@ -208,10 +208,15 @@
     items[0].classList.add("is-active");
     setInterval(function () {
       var next = (idx + 1) % items.length;
-      items[idx].classList.remove("is-active");
-      items[idx].classList.add("is-leaving");
+      var prev = items[idx];
+      prev.classList.remove("is-active");
+      prev.classList.add("is-leaving");
+      items[next].classList.remove("is-leaving");
       items[next].classList.add("is-active");
-      setTimeout(function () { items[idx].classList.remove("is-leaving"); }, 600);
+      /* Fixed 28 Sep 2026: this used to clear is-leaving on items[idx] AFTER idx had moved on,
+         so the word that left kept is-leaving and was invisible on its next turn, leaving the
+         slot blank. It now clears the word that actually left. */
+      setTimeout(function () { prev.classList.remove("is-leaving"); }, 600);
       idx = next;
     }, 2200);
   })();
