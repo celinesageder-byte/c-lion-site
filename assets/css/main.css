@@ -444,7 +444,9 @@ section { position: relative; }
    ========================================================================== */
 .marquee-section { padding: 64px 0 70px; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
 .marquee { overflow: hidden; }
-.marquee-track { display: flex; gap: 18px; width: max-content; will-change: transform; }
+.marquee-track { display: flex; gap: 18px; width: max-content; }
+/* 28 Sep 2026: will-change only where there is a fine pointer. On iPhone it pinned the whole strip as one giant layer and helped crash Safari. */
+@media (hover: hover) and (pointer: fine) { .marquee-track { will-change: transform; } }
 .marquee-track img { height: clamp(150px, 20vw, 230px); width: auto; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--radius-m); border: 1px solid var(--border); flex: none; }
 .marquee-label { text-align: center; margin-top: 30px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-muted); }
 @media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } }

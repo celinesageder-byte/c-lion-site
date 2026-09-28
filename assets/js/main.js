@@ -112,7 +112,7 @@
   // it stick. Lenis owns native scroll position each rAF once it exists,
   // which is correct for a real visitor's wheel and touch input, and is
   // exactly why an external hard jump fights it during automated capture.
-  var skipLenis = /[?&]nolenis(=|&|$)/.test(location.search);
+  var skipLenis = /[?&]nolenis(=|&|$)/.test(location.search) || !FINE_HOVER; /* touch devices scroll natively, 28 Sep 2026 iPhone fix */
 
   if (!REDUCE && !skipLenis && window.Lenis) {
     try {
@@ -450,7 +450,8 @@
   (function heroGL() {
     var canvas = document.getElementById("heroGL");
     if (!canvas) return;
-    if (REDUCE) { canvas.remove(); return; }
+    /* 28 Sep 2026: no WebGL on touch or small screens. c-lion.ai crashed Safari on Celine's iPhone; the CSS glow underneath carries the same look. */
+    if (REDUCE || !FINE_HOVER || window.innerWidth < 900) { canvas.remove(); return; }
     try {
       var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
       if (!gl) throw new Error("no webgl");
